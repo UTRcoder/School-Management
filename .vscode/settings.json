@@ -1,0 +1,8 @@
+{
+    "editor.suggest.showWords": true,
+    "editor.suggest.matchOnWordStartOnly": true,
+    "C_Cpp.inlayHints.parameterNames.suppressWhenArgumentContainsName": false,
+    "typescript.tsserver.web.projectWideIntellisense.enabled": true,
+    "typescript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": true,
+    "javascript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": true
+}
