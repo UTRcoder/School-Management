@@ -14,7 +14,7 @@ export default function Dashboard({
       <div className="w-[14%] md:w-[8%] lg:w-[16%] xl:w-[14%] p-4">
         <Link href="/" className="flex item-center justify-center lg:justify-start gap-2">
           <Image src="/logo.png" alt="logo" width={32} height={32} />
-          <span className="hidden lg:block mt-1 font-bold">St. Jospeh's</span>
+          <span className="hidden lg:block mt-1 font-bold">St. Jospeh&apos;s</span>
         </Link>
         <Menu />
       </div>
