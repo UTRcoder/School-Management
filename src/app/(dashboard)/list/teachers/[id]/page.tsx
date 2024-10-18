@@ -1,61 +1,72 @@
 import Announcements from "@/components/Announcements"
 import BigCalendar from "@/components/BigCalendar"
-import FormModel from "@/components/FormModel"
+import BigCalendarContainer from "@/components/BigCalendarContainer"
+import FormContainer from "@/components/FormContainer"
 import Performance from "@/components/Performance"
+import prisma from "@/lib/prisma"
+import { auth } from "@clerk/nextjs/server"
+import { Teacher } from "@prisma/client"
 import Image from "next/image"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 
-const Page = () => {
+const SingleTeacherPage = async({params:{id}}:{params:{id:string}}) => {
+
+    const { sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+    const teacher:|Teacher&{_count:{subjects:number;lessons:number;classes:number}}|null= await prisma.teacher.findUnique({
+        where:{id}, 
+        include:{
+            _count:{
+                select:{
+                    lessons:true,
+                    subjects:true,
+                    classes:true
+                }
+            }
+        }
+    })
+    if(!teacher) return notFound ()
     return (
-        <div className="flex-1 p-4 flex flex-col lg:flex-row gap-4">
+        <div className="flex-1 p-4 flex flex-col xl:flex-row gap-4">
             {/* Left */}
             <div className="w-full xl:w-2/3">
                 {/* Top */}
-                <div className="flex flex-col xl:flex-row gap-4">
+                <div className="flex flex-col lg:flex-row gap-4">
                     {/* User Info Cards */}
                     <div className="bg-sky py-6 px-4 rounded-md flex-1 flex gap-4" >
                         <div className="w-1/3">
-                            <Image src="https://images.pexels.com/photos/5212317/pexels-photo-5212317.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="" width={144} height={144} className="w-36 h-36 rounded-full object-cover" />
+                            <Image src={teacher.img || "/noAvatar.png"} alt="/noAvatar.png" width={144} height={144} className="w-36 h-36 rounded-full object-cover" />
                         </div>
                         <div className="w-2/3 flex flex-col justify-between gap-4">
                             <div className="flex items-center gap-4">
-                                <h1 className="text-xl font-semibold">Leonard hdjd</h1>
-                                <FormModel
+                                <h1 className="text-xl font-semibold">{teacher.name+" "+teacher.surname}</h1>
+                                {role==="admin"&&(<FormContainer
                                     table="teacher"
                                     type="update"
-                                    data={{
-                                        id: 1,
-                                        username: "dean agur",
-                                        email: "deanagur@gmail.com",
-                                        password: "passfsfss",
-                                        firstName: "u",
-                                        lastName: "e",
-                                        phone: "84843837497",
-                                        address: "uieeiuwyww747",
-                                        dateOfBirth:"2000-01-01",
-                                        bloodType: "A+",
-                                        img: "https://images.pexels.com/photos/5212317/pexels-photo-5212317.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                                    }}
+                                    color="bg-black"
+                                    data={teacher}
                                 />
+                                )}
                             </div>
                             <p className="text-sm text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit.
                             </p>
                             <div className="flex items-center justify-between gap-2 flex-wrap text-xs font-medium">
                                 <div className="w-full md:w-1/3 lg:w-full 2xl: w-1/3 flex items-center gap-2">
                                     <Image src="/blood.png" alt="" width={14} height={14}></Image>
-                                    <span>A+</span>
+                                    <span>{teacher.bloodType}</span>
                                 </div>
                                 <div className="w-full md:w-1/3 lg:w-full 2xl: w-1/3 flex items-center gap-2">
                                     <Image src="/date.png" alt="" width={14} height={14}></Image>
-                                    <span>January 2025</span>
+                                    <span>{new Intl.DateTimeFormat('en-US').format(teacher.birthday)}</span>
                                 </div>
                                 <div className="w-full md:w-1/3 lg:w-full 2xl: w-1/3 flex items-center gap-2">
                                     <Image src="/mail.png" alt="" width={14} height={14}></Image>
-                                    <span>user@gmail.utr</span>
+                                    <span>{teacher.email|| "Currently unavailable"}</span>
                                 </div>
                                 <div className="w-full md:w-1/3 lg:w-full 2xl: w-1/3 flex items-center gap-2">
                                     <Image src="/phone.png" alt="" width={14} height={14}></Image>
-                                    <span>+91 7318501412</span>
+                                    <span>{teacher.phone|| "Currently unavailable"}</span>
                                 </div>
                             </div>
                         </div>
@@ -73,21 +84,21 @@ const Page = () => {
                         <div className="flex items-center gap-8 bg-white p-4 rounded-md w-full md:w-[48%] xl:w-[45%] 2xl:w-[46%]">
                             <Image src="/singleBranch.png" alt="" width={24} height={24} className="w-6 h-6" />
                             <div className="">
-                                <h1 className="text-xl font-semibold">2</h1>
+                                <h1 className="text-xl font-semibold">{teacher._count.subjects}</h1>
                                 <span className="text-sm text-gray-500">Branches</span>
                             </div>
                         </div>
                         <div className="flex items-center gap-8 bg-white p-4 rounded-md w-full md:w-[48%] xl:w-[45%] 2xl:w-[46%]">
                             <Image src="/singleLesson.png" alt="" width={24} height={24} className="w-6 h-6" />
                             <div className="">
-                                <h1 className="text-xl font-semibold">6</h1>
+                                <h1 className="text-xl font-semibold">{teacher._count.lessons}</h1>
                                 <span className="text-sm text-gray-500">Lessons</span>
                             </div>
                         </div>
                         <div className="flex items-center gap-8 bg-white p-4 rounded-md w-full md:w-[48%] xl:w-[45%] 2xl:w-[46%]">
                             <Image src="/singleClass.png" alt="" width={24} height={24} className="w-6 h-6" />
                             <div className="">
-                                <h1 className="text-xl font-semibold">6</h1>
+                                <h1 className="text-xl font-semibold">{teacher._count.classes }</h1>
                                 <span className="text-sm text-gray-500">Classes</span>
                             </div>
                         </div>
@@ -96,7 +107,8 @@ const Page = () => {
                 {/* Bottom */}
                 <div className=" mt-4 bg-white rounded-lg p-4 h-[800px]">
                     <h1>Teacher&apos;s Schedule</h1>
-                    <BigCalendar />
+                    <BigCalendarContainer type="teacherId" id={teacher.id} />
+                    {/* <BigCalendar /> */}
                 </div>
             </div>
             {/* Right */}
@@ -106,11 +118,15 @@ const Page = () => {
                         Shortcuts
                     </h1>
                     <div className="mt-4 flex gap-4 flex-wrap text-xs text-gray=500">
-                        <Link className="p-3 rounded-md bg-skyLight" href="/">Teacher&apos;s Classes</Link>
-                        <Link className="p-3 rounded-md bg-purpleLight" href="/">Teacher&apos;s Students</Link>
-                        <Link className="p-3 rounded-md bg-yellowLight" href="/">Teacher&apos;s Lessons</Link>
-                        <Link className="p-3 rounded-md bg-pink-50" href="/">Teacher&apos;s Exams</Link>
-                        <Link className="p-3 rounded-md bg-green-50" href="/">Teacher&apos;s Assignments</Link>
+                        <Link className="p-3 rounded-md bg-skyLight" href={`/list/classes?supervisorId=${"teacher2"}`}>Teacher&apos;s Classes</Link>
+
+                        <Link className="p-3 rounded-md bg-purpleLight" href={`/list/students?teacherId=${"teacher2"}`}>Teacher&apos;s Students</Link>
+
+                        <Link className="p-3 rounded-md bg-yellowLight" href={`/list/lessons?teacherId=${"teacher2"}`}>Teacher&apos;s Lessons</Link>
+
+                        <Link className="p-3 rounded-md bg-pink-50" href={`/list/exams?teacherId=${"teacher2"}`}>Teacher&apos;s Exams</Link>
+
+                        <Link className="p-3 rounded-md bg-green-50" href={`/list/assignments?teacherId=${"teacher2"}`}>Teacher&apos;s Assignments</Link>
                     </div>
                 </div>
                 <Performance />
@@ -120,4 +136,4 @@ const Page = () => {
     )
 }
 
-export default Page
+export default SingleTeacherPage

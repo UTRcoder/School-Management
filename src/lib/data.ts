@@ -1,7 +1,6 @@
-// TEMPORARY DATA
+//Temporary Data
 
-export let role = "admin";
-
+export let role = "student"
 export const teachersData = [
   {
     id: 1,
@@ -675,14 +674,14 @@ export const resultsData = [
     student: "John Doe",
     date: "2025-01-01",
     type: "exam",
-    score: 90,
+    score: 10,
   },
   {
     id: 2,
     subject: "English",
     class: "2A",
     teacher: "John Doe",
-    student: "John Doe",
+    student: "Neeraj",
     date: "2025-01-01",
     type: "exam",
     score: 90,
@@ -732,10 +731,10 @@ export const resultsData = [
     subject: "History",
     class: "6A",
     teacher: "John Doe",
-    student: "John Doe",
+    student: "Harsh Doe",
     date: "2025-01-01",
     type: "exam",
-    score: 90,
+    score: 37,
   },
   {
     id: 8,
