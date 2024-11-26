@@ -19,7 +19,7 @@ services:
     ports:
       - '3000:3000'
     environment:
-      - DATABASE_URL: postgresql://skoolu:XSW@xsw2@[0.0.0.0]:5432/mydb
+      - DATABASE_URL: postgresql://skoolu:XSW@xsw2@postgres_db:5432/school
     depends_on:
       - postgres
 
