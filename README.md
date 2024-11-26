@@ -1,26 +1,34 @@
-# Lama Dev School Management Dashboard
+# School Management System
 
-## Getting Started
+A modern, efficient, and scalable web application for managing school operations, built with **Next.js**, **PostgreSQL**, and **Prisma**.
 
-First, run the development server:
+## Features
+
+- **Student Management**: Add, update, delete, and view student details.
+- **Teacher Management**: Manage teacher profiles and schedules.
+- **Class Management**: Organize classes, subjects, and timetables.
+- **Grading System**: Record and review student grades and performance.
+- **Responsive Design**: Optimized for desktop and mobile devices.
+- **Attendance Tracking**: Keep track of student and teacher attendance (Building In Process)
+
+## Tech Stack
+
+- **Frontend**: [Next.js](https://nextjs.org) - A React-based framework for server-rendered and static web applications.
+- **Backend**: Node.js (via Next.js API routes)
+- **Database**: PostgreSQL, managed using [Prisma](https://www.prisma.io).
+- **Styling**: Tailwind CSS
+
+## Prerequisites
+
+Ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (v16 or higher)
+- [Docker](https://www.docker.com/) (for PostgreSQL database)
+- [Prisma CLI](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-cli)
+
+## Setup Instructions
+
+### 1. Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Lama Dev Youtube Channel](https://youtube.com/lamadev) 
-- [Next.js](https://nextjs.org/learn)
+git clone https://github.com/UTRcoder/school-management.git
