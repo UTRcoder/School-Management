@@ -39,12 +39,12 @@ export default function LoginPage() {
 
             <Clerk.GlobalError className='text-sm text-red-400'/>
             <Clerk.Field name="identifier" className='flex flex-col gap-2'>
-                <Clerk.Label className='text-xs text-gray-500'> Username</Clerk.Label>
+                <Clerk.Label className='text-xs text-gray-500'> Username (test)</Clerk.Label>
                 <Clerk.Input type='text'required className='p-2 rounded-md ring-1 ring-gray-300'/>
                 <Clerk.FieldError className='text-sm text-red-400'/>
             </Clerk.Field>
             <Clerk.Field name="password" className='flex flex-col gap-2'>
-                <Clerk.Label className='text-xs text-gray-500'> Password</Clerk.Label>
+                <Clerk.Label className='text-xs text-gray-500'> Password (test)</Clerk.Label>
                 <Clerk.Input type='password'required className='p-2 rounded-md ring-1 ring-gray-300'/> 
                 <Clerk.FieldError className='text-sm text-red-400'/>
             </Clerk.Field>
