@@ -547,7 +547,7 @@ export const deleteParent = async (
   try {
     await clerkClient.users.deleteUser(id);
 
-    await prisma.teacher.delete({
+    await prisma.parent.delete({
       where: {
         id: id,
       },
