@@ -205,8 +205,7 @@ async function main() {
             status: "EXCUSED",
             studentId: student.id,
             lessonId: lesson.id,
-            teacherId: teacher.id,
-            schoolId: school.id
+            teacherId: teacher.id
           },
         });
       }
