@@ -165,15 +165,52 @@ async function main() {
   }
 
   // ATTENDANCE
-  for (let i = 1; i <= 10; i++) {
-    await prisma.attendance.create({
-      data: {
-        date: new Date(), 
-        status: true, 
-        studentId: `student${i}`, 
-        lessonId: (i % 30) + 1, 
+  async function seedAttendance() {
+    const students = await prisma.student.findMany({
+      include: {
+        class: {
+          include: {
+            lessons: {
+              include: { teacher: true },
+            },
+          },
+        },
       },
     });
+
+    if (students.length === 0) {
+      console.log("⚠️ No students found. Skipping attendance seeding.");
+      return;
+    }
+
+    for (const student of students) {
+      const studentClass = student.class;
+
+      if (!studentClass || studentClass.lessons.length === 0) {
+        console.warn(`⚠️ No class or lessons found for student ${student.name}`);
+        continue;
+      }
+
+      for (const lesson of studentClass.lessons) {
+        const teacher = lesson.teacher;
+
+        if (!teacher) {
+          console.warn(`⚠️ No teacher found for lesson ${lesson.name}`);
+          continue;
+        }
+
+        await prisma.attendance.create({
+          data: {
+            date: new Date(),
+            status: "EXCUSED",
+            studentId: student.id,
+            lessonId: lesson.id,
+            teacherId: teacher.id,
+            schoolId: school.id
+          },
+        });
+      }
+    }
   }
 
   // EVENT
