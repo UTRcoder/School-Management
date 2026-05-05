@@ -12,35 +12,10 @@ enum AttendanceStatus {
   LATE
   EXCUSED
 }
-model School {
-  id        Int   @id @default(autoincrement())
-  name      String
-  address   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  admins       Admin[]
-  parent       Parent[]
-  teachers     Teacher[]
-  students     Student[]
-  classes      Class[]
-  lessons      Lesson[]
-  grade        Grade[]
-  event        Event[]
-  result       Result[]
-  assignment   Assignment[]
-  subject      Subject[]
-  attendances  Attendance[]
-  announcement Announcement[]
-  Exam         Exam[]
-}
 
 model Admin {
   id       String @id
   username String @unique
-  schoolId Int
-  school   School @relation(fields: [schoolId], references: [id])
 }
 
 model Student {
@@ -61,11 +36,9 @@ model Student {
   birthday    DateTime
   attendances Attendance[]
   results     Result[]
-  schoolId    Int
   class       Class        @relation(fields: [classId], references: [id])
   grade       Grade        @relation(fields: [gradeId], references: [id])
   parent      Parent       @relation(fields: [parentId], references: [id])
-  school      School       @relation(fields: [schoolId], references: [id])
 }
 
 model Teacher {
@@ -85,8 +58,6 @@ model Teacher {
   classes     Class[]
   lessons     Lesson[]
   subjects    Subject[]    @relation("SubjectToTeacher")
-  schoolId    Int
-  school      School       @relation(fields: [schoolId], references: [id])
 }
 
 model Parent {
@@ -99,8 +70,6 @@ model Parent {
   address   String
   createdAt DateTime  @default(now())
   students  Student[]
-  schoolId Int
-  school    School    @relation(fields: [schoolId], references: [id])
 }
 
 model Grade {
@@ -108,8 +77,6 @@ model Grade {
   level    Int       @unique
   classess Class[]
   students Student[]
-  schoolId Int
-  school   School    @relation(fields: [schoolId], references: [id])
 }
 
 model Class {
@@ -124,8 +91,6 @@ model Class {
   events        Event[]
   lessons       Lesson[]
   students      Student[]
-  schoolId      Int
-  school        School         @relation(fields: [schoolId], references: [id])
 }
 
 model Subject {
@@ -133,8 +98,6 @@ model Subject {
   name     String    @unique
   lessons  Lesson[]
   teacher  Teacher[] @relation("SubjectToTeacher")
-  schoolId Int
-  school   School    @relation(fields: [schoolId], references: [id])
 }
 
 model Lesson {
@@ -152,8 +115,6 @@ model Lesson {
   class       Class        @relation(fields: [classId], references: [id])
   subject     Subject      @relation(fields: [subjectId], references: [id])
   teacher     Teacher      @relation(fields: [teacherId], references: [id])
-  schoolId    Int
-  school      School       @relation(fields: [schoolId], references: [id])
 }
 
 model Exam {
@@ -163,9 +124,7 @@ model Exam {
   endTime   DateTime
   lessonId  Int
   lesson    Lesson   @relation(fields: [lessonId], references: [id])
-  schoolId  Int
   results   Result[]
-  school    School   @relation(fields: [schoolId], references: [id])
 }
 
 model Assignment {
@@ -176,8 +135,6 @@ model Assignment {
   lessonId  Int
   lesson    Lesson   @relation(fields: [lessonId], references: [id])
   results   Result[]
-  schoolId  Int
-  school    School   @relation(fields: [schoolId], references: [id])
 }
 
 model Result {
@@ -189,8 +146,6 @@ model Result {
   assignment   Assignment? @relation(fields: [assignmentId], references: [id])
   exam         Exam?       @relation(fields: [examId], references: [id])
   student      Student     @relation(fields: [studentId], references: [id])
-  schoolId     Int
-  school       School      @relation(fields: [schoolId], references: [id])
 }
 
 model Attendance {
@@ -206,8 +161,6 @@ model Attendance {
   lesson    Lesson           @relation(fields: [lessonId], references: [id])
   student   Student          @relation(fields: [studentId], references: [id])
   teacher   Teacher          @relation(fields: [teacherId], references: [id])
-  schoolId  Int
-  school    School           @relation(fields: [schoolId], references: [id])
 
   @@unique([studentId, lessonId, date])
 }
@@ -220,8 +173,6 @@ model Event {
   endTime     DateTime
   classId     Int?
   class       Class?   @relation(fields: [classId], references: [id])
-  schoolId    Int
-  school      School   @relation(fields: [schoolId], references: [id])
 }
 
 model Announcement {
@@ -231,8 +182,6 @@ model Announcement {
   date        DateTime
   classId     Int?
   class       Class?   @relation(fields: [classId], references: [id])
-  schoolId    Int
-  school      School   @relation(fields: [schoolId], references: [id])
 }
 
 enum UserSex {
